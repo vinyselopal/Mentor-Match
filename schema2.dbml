@@ -1,0 +1,42 @@
+Table mentor {
+  id integer [primary key]
+  name varchar
+}
+
+Table predefined_answers {
+  id integer [primary key]
+  question_id integer [ref: > questions.id]
+  answer varchar
+}
+
+Table questions {
+  id integer [primary key]
+  name varchar
+}
+
+Table mentor_answers {
+  mentor_id integer [ref: > mentor.id]
+  question_id integer [ref: > questions.id]
+  predefined_answers_id integer [ref: > predefined_answers.id]
+  score integer
+  indexes {
+    (mentor_id, question_id) [pk]
+  }
+}
+
+Table mentee {
+  id integer [primary key]
+  name varchar
+}
+
+Table mentee_answers {
+  mentee_id integer [ref: > mentee.id]
+  question_id integer [ref: > questions.id]
+  predefined_answers_id integer [ref: > predefined_answers.id]
+  indexes {
+    (mentee_id, question_id) [pk]
+  }
+}
+
+Ref: mentor_answers.(question_id, predefined_answers_id) > predefined_answers.(question_id, id)
+Ref: mentee_answers.(question_id, predefined_answers_id) > predefined_answers.(question_id, id)
